@@ -1,10 +1,12 @@
 const express = require("express");
 const cors = require("cors");
+const DBconection = require("../config/db");
 
 class Server {
   constructor() {
     this.app = express();
     this.port = process.env.PORT;
+    DBconection();
     this.middlewares();
     this.routes();
   }
@@ -19,9 +21,9 @@ class Server {
     //Directorio Publico
     this.app.use(express.static("public"));
   }
-
+ 
   routes() {
-    this.app.use("/api/users", require("../routes/user.routes"));
+    this.app.use("/api/tasks", require("../routes/tasks.routes"));
   }
 
   listen() {
