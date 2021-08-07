@@ -13,7 +13,7 @@ const TaskSchema = Schema({
     type: [Number],
   },
   creationDate: {
-    type: Date,
+    type: String,
   },
   restTime: {
     type: [Number],

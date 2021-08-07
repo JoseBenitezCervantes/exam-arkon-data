@@ -37,7 +37,7 @@ const updateTask = async (req, res = response) => {
 };
 
 const getTask = async (req, res = response) => {
-  const body = req.body;
+  const body = req.params;
   const { id } = body;
   const task = await Task.findById(id);
   res.status(200).json({ msg: "Tarea encontrada", task });
@@ -46,7 +46,7 @@ const getTask = async (req, res = response) => {
 const getTasks = async (req, res = response) => {
   const body = req.body;
   const { findStatus } = body;
-  const task = await Task.find({$or:findStatus});
+  const task = await Task.find({ $or: findStatus });
   res.status(200).json({ msg: "Resultado", task });
 };
 

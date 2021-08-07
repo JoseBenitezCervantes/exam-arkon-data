@@ -3,9 +3,9 @@ const {  getTask, addTask, updateTask, getTasks } = require("../controllers/task
 
 const router = Router();
 
-router.get("/get", getTask);
+router.get("/get/:id", getTask);
 router.post("/add", addTask);
 router.put("/update", updateTask);
-router.get("/getTasks", getTasks);
+router.post("/getTasks", getTasks);
 
-module.exports = router;
+module.exports = router;  
