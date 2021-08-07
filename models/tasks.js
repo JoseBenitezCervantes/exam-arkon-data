@@ -1,11 +1,11 @@
 const { Schema, model } = require("mongoose");
 
 const TaskSchema = Schema({
-  nombre: {
+  name: {
     type: String,
     require: [true, "Nombre es obligatorio"],
   },
-  descripcion: {
+  description: {
     type: String,
     require: [true, "descripcion es obligatorio"],
   },
@@ -17,6 +17,9 @@ const TaskSchema = Schema({
   },
   restTime: {
     type: [Number],
+  },
+  statusTask: {
+    type: String,
   },
 });
 

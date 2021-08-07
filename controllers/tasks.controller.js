@@ -1,12 +1,53 @@
 const { response } = require("express");
+const Task = require("../models/tasks");
 
-const tasksGet = (req, res = response) => {
-  res.status(200).json({ msg: "Hello World" });
+const addTask = async (req, res = response) => {
+  const body = req.body;
+  const { name, description, initialTime, restTime } = body;
+  const time = Date.now();
+  const now = new Date(time);
+
+  const newTask = {
+    name,
+    description,
+    initialTime,
+    creationDate: now.toLocaleDateString(),
+    restTime,
+    statusTask: "NEW",
+  };
+
+  const task = new Task(newTask);
+  await task.save(task);
+  res.status(200).json({ msg: "Tarea agregada", task });
 };
 
-const addTask = (req, res = response) => {
-console.log("🚀 ~ file: usuarios.controller.js ~ line 8 ~ addTask ~ req", req.body)
-  res.status(200).json({ msg: "Hello World" });
+const updateTask = async (req, res = response) => {
+  const body = req.body;
+  const { name, description, initialTime, restTime, id, statusTask } = body;
+  const updateTask = {
+    name,
+    description,
+    initialTime,
+    restTime,
+    statusTask,
+  };
+
+  const task = await Task.findByIdAndUpdate(id, updateTask, { new: true });
+  res.status(200).json({ msg: "Tarea actualizada", task });
 };
 
-module.exports = { tasksGet, addTask };
+const getTask = async (req, res = response) => {
+  const body = req.body;
+  const { id } = body;
+  const task = await Task.findById(id);
+  res.status(200).json({ msg: "Tarea encontrada", task });
+};
+
+const getTasks = async (req, res = response) => {
+  const body = req.body;
+  const { findStatus } = body;
+  const task = await Task.find({$or:findStatus});
+  res.status(200).json({ msg: "Resultado", task });
+};
+
+module.exports = { addTask, updateTask, getTask, getTasks };

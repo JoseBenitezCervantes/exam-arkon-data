@@ -1,9 +1,11 @@
 const { Router } = require("express");
-const {  tasksGet, addTask } = require("../controllers/tasks.controller");
+const {  getTask, addTask, updateTask, getTasks } = require("../controllers/tasks.controller");
 
 const router = Router();
 
-router.get("/", tasksGet);
-router.post("/", addTask);
+router.get("/get", getTask);
+router.post("/add", addTask);
+router.put("/update", updateTask);
+router.get("/getTasks", getTasks);
 
 module.exports = router;
