@@ -21,6 +21,9 @@ const TaskSchema = Schema({
   statusTask: {
     type: String,
   },
+  completedTime : {
+    type: String,
+  }
 });
 
 module.exports = model("Task", TaskSchema);
