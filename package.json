@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node .",
+    "build": "react-scripts build && copyfiles netlify.toml ./build",
     "dev": "nodemon ."
   },
   "keywords": [],
