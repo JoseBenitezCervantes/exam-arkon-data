@@ -31,6 +31,7 @@ const updateTask = async (req, res = response) => {
     restTime,
     statusTask,
   };
+  console.log("🚀 ~ file: tasks.controller.js ~ line 28 ~ updateTask ~ updateTask", updateTask)
 
   const task = await Task.findByIdAndUpdate(id, updateTask, { new: true });
   res.status(200).json({ msg: "Tarea actualizada", task });
@@ -50,4 +51,11 @@ const getTasks = async (req, res = response) => {
   res.status(200).json({ msg: "Resultado", task });
 };
 
-module.exports = { addTask, updateTask, getTask, getTasks };
+const deleteTask = async (req, res = response) => {
+  const body = req.params;
+  const { id } = body;
+  const task = await Task.findByIdAndDelete(id);
+  res.status(200).json({ msg: "Tarea Eliminada", task });
+};
+
+module.exports = { addTask, updateTask, getTask, getTasks, deleteTask };
