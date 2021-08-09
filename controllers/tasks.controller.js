@@ -148,8 +148,8 @@ const setRamdonTask = async (req, res = response) => {
     };
     const time = Date.now();
     const now = new Date(time);
-    const randomMinutes = randomNum(30, 60);
-    const randomSec = randomNum(1, 60);
+    const randomMinutes = randomNum(30, 59);
+    const randomSec = randomNum(1, 59);
     const randomName = randomNum(0, arrNameTask.length - 1);
     const randomDay = randomNum(1, 7);
     now.setDate(now.getDate() + randomDay);
