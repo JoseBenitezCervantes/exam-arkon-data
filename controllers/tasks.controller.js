@@ -1,4 +1,5 @@
 const { response } = require("express");
+const { convertTime } = require("../misc/convertTime");
 const { restTimeHors } = require("../misc/restTime");
 const Task = require("../models/tasks");
 
@@ -12,7 +13,7 @@ const addTask = async (req, res = response) => {
     name,
     description,
     initialTime,
-    creationDate: now.toLocaleDateString(),
+    creationDate: now.toISOString(),
     restTime,
     statusTask: "NEW",
   };
@@ -82,4 +83,57 @@ const deleteTask = async (req, res = response) => {
   }
 };
 
-module.exports = { addTask, updateTask, getTask, getTasks, deleteTask };
+const getReportTasks = async (req, res = response) => {
+  const curr = new Date();
+  const firstday = new Date(curr.setDate(curr.getDate() - curr.getDay()));
+  firstday.setDate(curr.getDate() - curr.getDay() - 1);
+  const lastday = new Date(curr.setDate(curr.getDate() - curr.getDay() + 6));
+
+  //Estructura de data de grafica
+  const data = [
+    { day: 1, timeProduction: 0, label: "" },
+    { day: 2, timeProduction: 0, label: "" },
+    { day: 3, timeProduction: 0, label: "" },
+    { day: 4, timeProduction: 0, label: "" },
+    { day: 5, timeProduction: 0, label: "" },
+    { day: 6, timeProduction: 0, label: "" },
+    { day: 7, timeProduction: 0, label: "" },
+  ];
+
+  try {
+    //Busca los dias de la semana y de tareas finalizadas
+    const taskFind = await Task.find({
+      statusTask: "FINISH",
+      creationDate: {
+        $gte: firstday.toISOString(),
+        $lte: lastday.toISOString(),
+      },
+    });
+
+    //Llena la estructura de la data
+    if (taskFind.length) {
+      taskFind.map((x) => {
+        const date = Date.parse(x.creationDate);
+        const neDate = new Date(date);
+        //Convierte el tiempo trabajado a minutos
+        const time = convertTime(x.completedTime);
+
+        data[neDate.getDay()].timeProduction += time;
+        data[neDate.getDay()].label =
+          data[neDate.getDay()].timeProduction.toString();
+      });
+    }
+    res.status(200).json({ msg: "Resultado", data });
+  } catch (error) {
+    res.status(500).json({ msg: "Error", error: error.toString() });
+  }
+};
+
+module.exports = {
+  addTask,
+  updateTask,
+  getTask,
+  getTasks,
+  deleteTask,
+  getReportTasks,
+};
