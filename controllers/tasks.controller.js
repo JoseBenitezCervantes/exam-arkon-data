@@ -129,6 +129,53 @@ const getReportTasks = async (req, res = response) => {
   }
 };
 
+const setRamdonTask = async (req, res = response) => {
+  const arrTask = [];
+  const arrNameTask = [
+    "hablar",
+    "comer",
+    "vivir",
+    "estar",
+    "tomar",
+    "hacer",
+    "necesitar",
+    "querer",
+  ];
+  for (let index = 0; index < 5; index++) {
+    const randomNum = (min, max) => {
+      return Math.floor(Math.random() * (max - min + 1) + min);
+    };
+    const randomMinutes = randomNum(30, 60);
+    const randomSec = randomNum(1, 60);
+    const randomName = randomNum(0, arrNameTask.length - 1);
+    arrTask[index] = {
+      name: arrNameTask[randomName],
+      description: "Description test",
+      statusTask: "FINISH",
+      completedTime: `01:${
+        randomMinutes.toString().length === 1
+          ? "0" + randomMinutes.toString()
+          : randomMinutes
+      }:${
+        randomSec.toString().length === 1
+          ? "0" + randomSec.toString()
+          : randomSec
+      }`,
+      initialTime: [2, 0, 0],
+      restTime: [0, 60 - randomMinutes, 60 - randomSec],
+    };
+  }
+  for (const i of arrTask) {
+    try {
+      const task = new Task(i);
+      await task.save(task);
+      res.status(200).json({ msg: "Tarea agregada", task });
+    } catch (error) {
+      res.status(500).json({ msg: "Error", error: error.toString() });
+    }
+  }
+};
+
 module.exports = {
   addTask,
   updateTask,
@@ -136,4 +183,5 @@ module.exports = {
   getTasks,
   deleteTask,
   getReportTasks,
+  setRamdonTask,
 };
