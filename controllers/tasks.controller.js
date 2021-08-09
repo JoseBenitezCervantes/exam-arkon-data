@@ -169,11 +169,11 @@ const setRamdonTask = async (req, res = response) => {
     try {
       const task = new Task(i);
       await task.save(task);
-      res.status(200).json({ msg: "Tarea agregada", task });
     } catch (error) {
       res.status(500).json({ msg: "Error", error: error.toString() });
     }
   }
+  res.status(200).json({ msg: "Tareas agregadas", arrTask });
 };
 
 module.exports = {
