@@ -142,7 +142,7 @@ const setRamdonTask = async (req, res = response) => {
     "querer",
   ];
 
-  for (let index = 0; index < 10; index++) {
+  for (let index = 0; index < 50; index++) {
     const randomNum = (min, max) => {
       return Math.floor(Math.random() * (max - min + 1) + min);
     };
